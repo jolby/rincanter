@@ -33,7 +33,7 @@ lein deps # this installs incanter and its deps into the lib subdir
 
 p. Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the lib directory of the rincanter project. Then move the native jri lib into the root of the rincanter project. 
 
-h.3 Run and Test
+h3. Run and Test
 
 After doing this, you should be ready to go! To run rincanter's tests: 
 
