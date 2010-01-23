@@ -1,9 +1,9 @@
-h1. About
+h4. About
 rincanter is a clojure/incanter wrapper around the rosuda JRIEngine Java/R bridge. The hope is to allow easy access to an embedded R engine from incanter. It also offers translation between clojure/incanter datatypes and R datatypes such as R dataframe -> incanter dataset. 
-h1. Install
+h5. Install
 As rincanter sits on top the org.rosuda JRI and JRIEngine packages, you will need install these to use rincanter. This can be a bit tricky, as the JRI component needs to compile some native JNI libs and install them on the java.library.path in order to run. 
 
-h2. Download and Install the rosuda JRI and REngine components
+h5. Download and Install the rosuda JRI and REngine components
 
 bc..  svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
  svn://svn.rforge.net/org/trunk/rosuda/JRI
