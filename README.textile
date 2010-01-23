@@ -1,0 +1,33 @@
+h1. About
+rincanter is a clojure/incanter wrapper around the rosuda JRIEngine Java/R bridge. The hope is to allow easy access to an embedded R engine from incanter. It also offers translation between clojure/incanter datatypes and R datatypes such as R dataframe -> incanter dataset. 
+h1. Install
+As rincanter sits on top the org.rosuda JRI and JRIEngine packages, you will need install these to use rincanter. This can be a bit tricky, as the JRI component needs to compile some native JNI libs and install them on the java.library.path in order to run. 
+
+h2. Download and Install the rosuda JRI and REngine components
+
+bc..  svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
+ svn://svn.rforge.net/org/trunk/rosuda/JRI
+ cd JRI
+ configure && make
+p. You will now have a jri library file in this directory. Depending on your platform it will have a name like: libjri.so (linux) libjri.jnilib (Mac OS X) jri.dll (Windows) 
+
+bc..  cd ../REngine
+ configure && make
+p. You will now have an REngine.jar file in this directory. 
+
+bc..  cd JRI # this is a child dir of REngine, different from the JRI dir above
+ configure && make
+p. You will now have an JRIEngine.jar file in this directory. 
+
+Now you are ready to download rincanter and run it: 
+bc.. git clone git@github.com:jolby/rincanter.git
+cd rincanter
+lein deps # this installs incanter and its deps into the lib subdir
+
+p. Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the lib directory of the rincanter project. Then move the native jri lib into the root of the rincanter project. 
+
+After doing this, you should be ready to go! To run rincanter's tests: 
+bc.. lein test
+
+p. To start a swank-repl: 
+bc..  lein repl
