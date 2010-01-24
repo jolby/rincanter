@@ -1,6 +1,6 @@
 h3. About
 
-rincanter is a clojure/incanter wrapper around the rosuda JRIEngine Java/R bridge. The hope is to allow easy access to an embedded R engine from incanter. It also offers translation between clojure/incanter datatypes and R datatypes such as R dataframe to incanter dataset. 
+Rincanter is a clojure/incanter wrapper around the rosuda JRIEngine Java/R bridge. The hope is to allow easy access to an embedded R engine from incanter. It also offers translation between clojure/incanter datatypes and R datatypes such as R dataframe to incanter dataset. 
 
 h4. Install
 
