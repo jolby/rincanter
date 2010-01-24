@@ -31,8 +31,7 @@ I am using features in incanter that are in git but not up on clojars yet. You w
 
 bc.. lein install
 
-
-Now you are ready to download rincanter and run it: 
+p.Now you are ready to download rincanter and run it: 
 
 bc.. git clone git@github.com:jolby/rincanter.git
 cd rincanter
