@@ -10,6 +10,8 @@
 
                  ;;this is incanter from git installed locally
                  [incanter/incanter-app "1.0-master-SNAPSHOT"]]
-  :dev-dependencies [[leiningen/lein-swank "1.0.0-SNAPSHOT"]]
+  :dev-dependencies [[leiningen/lein-swank "1.0.0-SNAPSHOT"]
+                     [autodoc "0.7.0"]]
+  :autodoc { :name "rincanter", :page-title "Rincanter API documentation"}
   ;:native-path "./native"
   )
