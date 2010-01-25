@@ -61,9 +61,10 @@ p. To start a swank-repl:
 
 bc..  lein repl
 
+
 <a name="documentation"></a>
 
 h3. Documentation
 
 API Documentation for rincanter is located at:
-* "API":http://jolby.github.com/rincanter
+* "Rincanter API":http://jolby.github.com/rincanter
