@@ -1,5 +1,9 @@
 pom-generated.xml
 Manifest.txt
 cljr.jar
+rincanter.jar
+libjri.jnilib
+libjri.so
+jri.dll
 lib
 classes
