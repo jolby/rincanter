@@ -12,7 +12,9 @@
 (defonce *jri-engine* (ref nil))
 
 (defn init-jri-engine
-  ""
+  "Initialize the jri engine. This can only be done once in the
+lifetime of the jvm-- not our rules- that's how the embedded R engine
+seems to want things."
   ([] (init-jri-engine nil))
   ([handler]
      ;;check for pre-existing jri-engine
@@ -27,7 +29,8 @@
                {:jri (JRIEngine. (into-array ["--vanilla" "--quiet"]) handler)}))))
 
 (defn get-jri-engine
-  ""
+  "Get the jri-engine. If it doesn't exist, create it using the
+  default init-jri-engine function and return it."
   []
   (if @*jri-engine*
     (@*jri-engine* :jri)
@@ -74,15 +77,15 @@ and throw"
      (catch REXPMismatchException ex
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
 
-(defmacro with-r-eval
-  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
-  [& forms]
-  `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
-
 (defmacro with-r-eval-raw
   "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval-raw %) %) forms)))
+
+(defmacro with-r-eval
+  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
+  [& forms]
+  `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
 
 (defmacro with-r-try-parse-eval
   "Evaluate forms that are string using r-try-parse-eval, otherwise,
