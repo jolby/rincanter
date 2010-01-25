@@ -37,6 +37,13 @@
           (throw (IllegalStateException.
                   "Unable to initialize JRIEngine"))))))
 
+(defn r-eval-raw
+  "Eval expression in the R engine. Will not catch any exceptions that
+  happen during evaluation"
+  [expression]
+  (let [r (get-jri-engine)]
+    (.parseAndEval r expression)))
+
 (defn r-eval
   "Eval expression in the R engine"
   [expression]
@@ -66,6 +73,36 @@ and throw"
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex)))
      (catch REXPMismatchException ex
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
+
+(defmacro with-r-eval
+  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
+  [& forms]
+  `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
+
+(defmacro with-r-eval-raw
+  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
+  [& forms]
+  `(do ~@(map #(if (string? %) (list 'r-eval-raw %) %) forms)))
+
+(defmacro with-r-try-parse-eval
+  "Evaluate forms that are string using r-try-parse-eval, otherwise,
+  just eval clojure code normally"
+  [& forms]
+  `(do ~@(map #(if (string? %) (list 'r-try-parse-eval %) %) forms)))
+
+(defn r-set!
+ "Assign r-name to val within the R engine"
+ [r-name val]
+  (let [r (get-jri-engine)]
+    (try
+     (.assign r r-name val)
+     (catch REngineException ex
+       (println (format "Caught exception assigning R val: %s\n: %s" r-name ex))))))
+
+(defn r-get
+  [r-name]
+  "Retrieve the value with this name in the R engine"
+  (r-eval r-name))
 
 ;;
 ;;Inspection, typechecking and print methods
