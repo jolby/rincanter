@@ -82,14 +82,16 @@ otherwise"
     `(defmethod from-r ~type
        [~rexp]
        (with-meta
-         (vec ~@convert-forms)
+         ~@convert-forms
          {:r-type ~type})))
 
-(def-from-r rexp REXPLogical (.isTrue rexp))
-(def-from-r rexp REXPInteger (.asIntegers rexp))
-(def-from-r rexp REXPDouble (.asDoubles rexp))
-(def-from-r rexp REXPString (.asStrings rexp))
-(def-from-r rexp RList (map #(from-r %) rexp))
+(def-from-r rexp REXPLogical (vec (.isTrue rexp)))
+(def-from-r rexp REXPInteger (vec (.asIntegers rexp)))
+(def-from-r rexp REXPDouble (vec (.asDoubles rexp)))
+(def-from-r rexp REXPString (vec (.asStrings rexp)))
+(def-from-r rexp REXPFactor (from-r (.asFactor rexp)))
+(def-from-r rexp RList (vec (map #(from-r %) rexp)))
+(def-from-r rexp REXPGenericVector (from-r (.asList rexp)))
 
 (defn r-factor-to-categorical-var
   [rfactor]
@@ -98,21 +100,11 @@ otherwise"
    :labels (vec (.levels rfactor))
    :levels (vec (map #(.levelIndex rfactor %) (.levels rfactor)))))
 
- (defmethod from-r REXPFactor
-   [rexp]
-   (from-r (.asFactor rexp)))
-
 (defmethod from-r RFactor
   [rexp]
   (with-meta (vec (.asIntegers rexp))
     {:r-type REXPFactor
      :category-variable (r-factor-to-categorical-var rexp)}))
-
-(defmethod from-r REXPGenericVector
-  [rexp]
-  (with-meta
-    (from-r (.asList rexp))
-    {:r-type REXPGenericVector}))
 
 (defmethod from-r ::dataframe
   [dataframe]
