@@ -59,8 +59,7 @@ bc.. lein test
 
 p. To start a swank-repl: 
 
-bc..  lein repl
-
+bc.. lein repl
 
 <a name="documentation"></a>
 
