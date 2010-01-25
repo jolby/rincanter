@@ -25,8 +25,7 @@ incanter dataset."
                                REngineException REXPMismatchException)
            (org.rosuda.REngine.JRI JRIEngine)
            (org.rosuda.JRI RMainLoopCallbacks))
-  (:use (clojure.contrib core def
-                         [seq-utils :only [flatten]]))
+  (:use (clojure.contrib core def))
   (:use (incanter core))
   (:use (com.evocomputing.rincanter convert)))
 
