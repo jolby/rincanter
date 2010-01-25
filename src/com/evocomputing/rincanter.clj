@@ -78,17 +78,19 @@ and throw"
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
 
 (defmacro with-r-eval-raw
-  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
+  "Evaluate forms that are string using r-eval, otherwise, just eval
+clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval-raw %) %) forms)))
 
 (defmacro with-r-eval
-  "Evaluate forms that are string using r-eval, otherwise, just eval clojure code normally"
+  "Evaluate forms that are string using r-eval, otherwise, just eval
+  clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
 
 (defmacro with-r-try-parse-eval
-  "Evaluate forms that are string using r-try-parse-eval, otherwise,
+  "Evaluate forms that are string using r-try-parse-eval, otherwise
   just eval clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-try-parse-eval %) %) forms)))
