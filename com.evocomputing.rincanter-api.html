@@ -1,0 +1,242 @@
+<html>
+  <head>
+    <title>com.evocomputing.rincanter API reference (rincanter)</title>
+    <link href="static/favicon.png" rel="icon" />
+    <link href="static/favicon.png" rel="shortcut icon" />
+    <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/wiki.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/internal.css" rel="stylesheet" />
+    <!-- TODO: are we using these (from clojure.org)? If so, add the files -->
+    <script src="file/view/code_highlighter.js" type="text/javascript"></script>
+    <script src="file/view/clojure.js" type="text/javascript"></script>
+    <style>.menuWrapper{height: 36px;}</style>
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
+    <![endif]-->
+  </head>
+<!--
+This document was auto-generated from the source by the clojure autodoc system.
+To report errors or ask questions about the overall documentation structure, formatting,
+etc., contact Tom Faulhaber (google mail name: tomfaulhaber).
+For errors in the documentation of a particular namespace, contact the author of that
+namespace.
+-->
+  <body>
+    <div id="AllContentContainer">
+      <div id="Header">
+	<a id="Logo" href="index.html"><img alt="Clojure" height="100" width="100" src="static/clojure-icon.gif" /></a>
+	<h1><a title="page header title" id="page-header" href="index.html">Rincanter API documentation</a></h1>
+      </div>
+      <div id="leftcolumn"><div style="text-align: center;"></div>
+<div class="menu">
+  <div class="WikiCustomNav WikiElement wiki">
+    <a class="wiki_link" href="index.html">Overview</a><br />
+    <a class="wiki_link" href="api-index.html">API Index</a><br />
+    <a class="wiki_link" href="#">Namespaces:</a>
+    <ul id="left-sidebar-list">
+      <li><a href="com.evocomputing.rincanter-api.html" class="wiki_link">com.evocomputing.rincanter</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+      <div id="rightcolumn">
+	<div id="Content">
+	  <div class="contentBox"><div class="innerContentBox">
+              <div id="content_view" class="wiki wikiPage">
+                <div id="right-sidebar"><div id="toc">
+  <h1 class="nopad">Table of Contents</h1>
+  <div style="margin-left: 1em;" class="toc-section">
+    <a href="#toc0">Overview</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/dataframe?">dataframe?</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/get-jri-engine">get-jri-engine</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/init-jri-engine">init-jri-engine</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-attr">r-attr</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-attr-names">r-attr-names</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-eval">r-eval</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-eval-raw">r-eval-raw</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-get">r-get</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-set!">r-set!</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-try-parse-eval">r-try-parse-eval</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/with-r-eval">with-r-eval</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/with-r-eval-raw">with-r-eval-raw</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/with-r-try-parse-eval">with-r-try-parse-eval</a>
+    </div>
+    <br />
+  </div>
+</div>
+</div>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">com.evocomputing.rincanter</span></h1>
+by <span id="author">Joel Boehland</span><br />
+<br />Usage:
+<pre>
+(ns your-namespace
+  (:require <span id="long-name">com.evocomputing.rincanter</span>))
+</pre><pre>
+</pre><h2>Overview</h2>
+<pre id="namespace-docstr">Rincanter is a clojure/incanter wrapper around the rosuda
+JRIEngine Java/R bridge. The hope is to allow easy access to an
+embedded R engine from incanter. It also offers translation between
+clojure/incanter datatypes and R datatypes such as R dataframe to
+incanter dataset.</pre>
+<br />
+<h2>Public Variables and Functions</h2>
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/dataframe?">dataframe?</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (dataframe? rexp)
+</pre>
+  <pre id="var-docstr">Returns true if the passed in object is an R dataframe, nil
+otherwise</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L155" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/get-jri-engine">get-jri-engine</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (get-jri-engine)
+</pre>
+  <pre id="var-docstr">Get the jri-engine. If it doesn't exist, create it using the
+default init-jri-engine function and return it.</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L51" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/init-jri-engine">init-jri-engine</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (init-jri-engine)
+       (init-jri-engine handler)
+</pre>
+  <pre id="var-docstr">Initialize the jri engine. This can only be done once in the
+lifetime of the jvm-- not our rules- that's how the embedded R engine
+seems to want things.</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L34" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-attr">r-attr</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-attr rexp attr-name)
+</pre>
+  <pre id="var-docstr">Returns the attribute with the passed in name, or nil.</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L145" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-attr-names">r-attr-names</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-attr-names rexp)
+</pre>
+  <pre id="var-docstr">Return a seq of attributes, or nil if the REXP has no attributes</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L139" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-eval">r-eval</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-eval expression)
+</pre>
+  <pre id="var-docstr">Eval expression in the R engine</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L70" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-eval-raw">r-eval-raw</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-eval-raw expression)
+</pre>
+  <pre id="var-docstr">Eval expression in the R engine. Will not catch any exceptions that
+happen during evaluation</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L63" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-get">r-get</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-get r-name)
+</pre>
+  <pre id="var-docstr">Retrieve the value with this name in the R engine</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L127" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-set!">r-set!</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-set! r-name val)
+</pre>
+  <pre id="var-docstr">Assign r-name to val within the R engine</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L118" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-try-parse-eval">r-try-parse-eval</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-try-parse-eval expression)
+</pre>
+  <pre id="var-docstr">Eval expression in the R engine, wrapped (on the R side) in
+try/catch. Will catch errors on the R side and convert to Exception
+and throw</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L81" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/with-r-eval">with-r-eval</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (with-r-eval &amp; forms)
+</pre>
+  <pre id="var-docstr">Evaluate forms that are string using r-eval, otherwise, just eval
+clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L106" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/with-r-eval-raw">with-r-eval-raw</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (with-r-eval-raw &amp; forms)
+</pre>
+  <pre id="var-docstr">Evaluate forms that are string using r-eval, otherwise, just eval
+clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L100" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/with-r-try-parse-eval">with-r-try-parse-eval</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (with-r-try-parse-eval &amp; forms)
+</pre>
+  <pre id="var-docstr">Evaluate forms that are string using r-try-parse-eval, otherwise
+just eval clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/b4fb80a15173efb83c52ebf5da1bc757ad798353/src/com/evocomputing/rincanter.clj#L112" id="var-source">Source</a>
+</div>
+
+
+</div>
+              </div>
+            </div>
+          </div>
+	</div>
+	<div id="foot">
+	  <div style="text-align: center;" id="copyright">Eclipse Public License (EPL)</div>
+	</div>
+      </div>
+      <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
+      Clojure auto-documentation system by Tom Faulhaber.</div>
+    </div>
+    <!-- /AllContentContainer -->
+  </body>
+
+</html>
