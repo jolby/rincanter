@@ -1,4 +1,24 @@
-(ns com.evocomputing.rincanter
+;; by Joel Boehland http://github.com/jolby/rincanter
+;; January 24, 2010
+
+;; Copyright (c) Joel Boehland, 2010. All rights reserved.  The use
+;; and distribution terms for this software are covered by the Eclipse
+;; Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;; which can be found in the file epl-v10.html at the root of this
+;; distribution.  By using this software in any fashion, you are
+;; agreeing to be bound by the terms of this license.  You must not
+;; remove this notice, or any other, from this software.
+
+
+(ns #^{:doc
+       "Rincanter is a clojure/incanter wrapper around the rosuda
+JRIEngine Java/R bridge. The hope is to allow easy access to an
+embedded R engine from incanter. It also offers translation between
+clojure/incanter datatypes and R datatypes such as R dataframe to
+incanter dataset."
+       :author "Joel Boehland"}
+
+  com.evocomputing.rincanter
   (:import (org.rosuda.REngine REXP RList REXPGenericVector
                                REXPInteger REXPDouble REXPString
                                RFactor REXPFactor
@@ -105,8 +125,8 @@ clojure code normally"
        (println (format "Caught exception assigning R val: %s\n: %s" r-name ex))))))
 
 (defn r-get
-  [r-name]
   "Retrieve the value with this name in the R engine"
+  [r-name]
   (r-eval r-name))
 
 ;;
