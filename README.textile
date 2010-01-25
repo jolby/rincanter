@@ -1,6 +1,16 @@
+* <a href="#about">About</a>
+* <a href="#install">Install</a>
+* <a href="#examples">Example Usage</a>
+* <a href="#documentation">API Documentation</a>
+
+
+<a name="about"></a>
+
 h3. About
 
 Rincanter is a clojure/incanter wrapper around the rosuda JRIEngine Java/R bridge. The hope is to allow easy access to an embedded R engine from incanter. It also offers translation between clojure/incanter datatypes and R datatypes such as R dataframe to incanter dataset. 
+
+<a name="install"></a>
 
 h4. Install
 
@@ -39,6 +49,8 @@ lein deps # this installs incanter and its deps into the lib subdir
 
 p. Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the lib directory of the rincanter project. Then move the native jri lib into the root of the rincanter project. 
 
+<a name="examples"></a>
+
 h3. Run and Test
 
 After doing this, you should be ready to go! To run rincanter's tests: 
@@ -48,3 +60,10 @@ bc.. lein test
 p. To start a swank-repl: 
 
 bc..  lein repl
+
+<a name="documentation"></a>
+
+h3. Documentation
+
+API Documentation for rincanter is located at:
+* "API":http://jolby.github.com/rincanter
