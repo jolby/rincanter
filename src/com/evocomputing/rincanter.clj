@@ -20,7 +20,7 @@ incanter dataset."
 
   com.evocomputing.rincanter
   (:import (org.rosuda.REngine REXP RList REXPGenericVector
-                               REXPInteger REXPDouble REXPString
+                               REXPInteger REXPDouble REXPString REXPLogical
                                RFactor REXPFactor
                                REngineException REXPMismatchException)
            (org.rosuda.REngine.JRI JRIEngine)
@@ -148,6 +148,12 @@ clojure code normally"
   (if (.isInstance org.rosuda.REngine.REXP rexp)
     (.getAttribute rexp attr-name)))
 
+(defn r-true
+  "Most R variables are collections. This tests a sequence for
+equality with 1. Returns true if all equal 1, false otherwise"
+  [seq]
+  (every? #(= 1 %) seq))
+
 ;;
 ;; Converting R types <--> Clojure types
 ;;===========================================================================
@@ -169,6 +175,12 @@ otherwise"
    true (class rexp)))
 
 (defmulti from-r from-r-dispatch)
+
+(defmethod from-r REXPLogical
+  [rexp]
+  (with-meta
+    (vec (.isTRUE rexp))
+    {:r-type REXPLogical}))
 
 (defmethod from-r REXPInteger
   [rexp]
@@ -246,6 +258,10 @@ otherwise"
 (defmethod to-r REXPInteger
   [obj]
   (REXPInteger. (int-array obj)))
+
+(defmethod to-r REXPLogical
+  [obj]
+  (REXPLogical. (byte-array obj)))
 
 (defmethod to-r REXPDouble
   [obj]
