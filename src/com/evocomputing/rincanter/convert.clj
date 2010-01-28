@@ -9,13 +9,12 @@
 ;; agreeing to be bound by the terms of this license.  You must not
 ;; remove this notice, or any other, from this software.
 
-
 (ns #^{:doc
        "Convert between the rosuda Java/R wrapper types and Clojure types"
        :author "Joel Boehland"}
 
   com.evocomputing.rincanter.convert
-  (:import (org.rosuda.REngine REXP RList REXPGenericVector
+  (:import (org.rosuda.REngine REXP RList REXPList REXPVector REXPGenericVector
                                REXPInteger REXPDouble REXPString REXPLogical
                                RFactor REXPFactor
                                REngineException REXPMismatchException)
@@ -40,18 +39,38 @@
   (when (.isInstance org.rosuda.REngine.REXP rexp)
     (.getAttribute rexp attr-name)))
 
+(defn r-has-attr?
+  "Returns the attribute with the passed in name, or nil."
+  [rexp attr-name]
+  (when (.isInstance org.rosuda.REngine.REXP rexp)
+    (.hasAttribute rexp attr-name)))
+
 (defn r-atts
   "Returns a map of the R object's attribute-names -> attributes, or nil."
   [rexp]
   (when (.isInstance org.rosuda.REngine.REXP rexp)
     (into {} (map #(vec (list % (from-r (r-attr rexp %)))) (r-attr-names rexp)))))
 
+(defn r-atts-raw
+  "Returns the JRI object representing the R attributes for this object
+ or nil if there are no attributes"
+  [rexp]
+  (when (.isInstance org.rosuda.REngine.REXP rexp)
+    (._attr rexp)))
+
+(defn r-map-to-atts
+  "Converts a map into the nested list form that rosuda JRI seems to
+want in its constructors"
+  [attr-map]
+  (.REXPList (RList.
+              (into-array REXP (map #(to-r %) (vals attr-map))
+              (into-array String (keys attr-map))))))
+
 (defn r-true
   "Most R variables are collections. This tests a sequence for
-equality with 1. Returns true if all equal 1, false otherwise"
+equality with 1. Returns true if all equal 1 or true, false otherwise"
   [seq]
-  (every? #(= 1 %) seq))
-
+  (every? #(or (= 1 %) (true? %))  seq))
 
 ;;
 ;; Converting R types <--> Clojure types
@@ -82,13 +101,12 @@ otherwise"
        [~rexp]
        (with-meta
          ~@convert-forms
-         {:r-type ~type})))
+         {:r-type ~type :r-atts (r-atts-raw ~rexp)})))
 
 (def-from-r rexp REXPLogical (vec (.isTrue rexp)))
 (def-from-r rexp REXPInteger (vec (.asIntegers rexp)))
 (def-from-r rexp REXPDouble (vec (.asDoubles rexp)))
 (def-from-r rexp REXPString (vec (.asStrings rexp)))
-(def-from-r rexp REXPFactor (from-r (.asFactor rexp)))
 (def-from-r rexp RList (vec (map #(from-r %) rexp)))
 (def-from-r rexp REXPGenericVector (from-r (.asList rexp)))
 
@@ -99,10 +117,19 @@ otherwise"
    :labels (vec (.levels rfactor))
    :levels (vec (map #(.levelIndex rfactor %) (.levels rfactor)))))
 
+(defmethod from-r REXPFactor
+  [rexp]
+  (with-meta (vec (.asIntegers (.asFactor rexp)))
+    {:r-type REXPFactor
+     :r-atts (r-atts-raw rexp)
+     :category-variable (r-factor-to-categorical-var (.asFactor rexp))}))
+
 (defmethod from-r RFactor
   [rexp]
   (with-meta (vec (.asIntegers rexp))
-    {:r-type REXPFactor
+    {:r-type REXPFactor ;;Not a mistake- use the higher level
+     ;;REXPFactor interface on the return trip
+     :r-atts (r-atts-raw rexp)
      :category-variable (r-factor-to-categorical-var rexp)}))
 
 (defmethod from-r ::dataframe
@@ -115,7 +142,10 @@ otherwise"
         col-meta (zipmap names (map #(meta %) cols))
         ds (partition (count names) (apply interleave cols))
         dataset (dataset names ds)]
-    (with-meta dataset (merge (meta dataset) {:col-meta col-meta :r-type ::dataframe}))))
+    (with-meta dataset (merge (meta dataset)
+                              {:col-meta col-meta
+                               :r-type ::dataframe
+                               :r-atts (r-atts-raw dataframe)}))))
 
 (defmethod from-r ::nil
   [rexp]
@@ -125,34 +155,59 @@ otherwise"
   [obj]
   (cond
    (nil? obj) ::nil
+   (.isInstance org.rosuda.REngine.REXP obj) ::rexp
    (and (meta obj)
         (:r-type (meta obj))) (:r-type (meta obj))
+   (= "[B" (.getName (class obj))) ::byte-array
+   (= "[I" (.getName (class obj))) ::int-array
+   (= "[F" (.getName (class obj))) ::float-array
+   (= "[D" (.getName (class obj))) ::double-array
+   (= "[Ljava.lang.String;" (.getName (class obj))) ::string-array
    true (class obj)))
 
 (defmulti to-r to-r-dispatch)
 
+(defmethod to-r ::rexp
+  [obj]
+  ;;This obj is already converted to one of the JRI types
+  ;;just return it.
+  obj)
+
 (defmethod to-r REXPInteger
   [obj]
-  (REXPInteger. (int-array obj)))
+  (REXPInteger. (int-array obj) (r-atts-raw obj)))
+
+(defmethod to-r ::int-array
+  [obj]
+  (REXPInteger. obj (r-atts-raw obj)))
 
 (defmethod to-r REXPLogical
   [obj]
-  (REXPLogical. (byte-array obj)))
+  (REXPLogical. (byte-array obj) (r-atts-raw obj)))
 
 (defmethod to-r REXPDouble
   [obj]
-  (REXPDouble. (double-array obj)))
+  (REXPDouble. (double-array obj) (r-atts-raw obj)))
+
+(defmethod to-r ::double-array
+  [obj]
+  (REXPDouble. obj (r-atts-raw obj)))
 
 (defmethod to-r REXPString
   [obj]
-  (REXPString. (into-array obj)))
+  (REXPString. (into-array String obj) (r-atts-raw obj)))
+
+(defmethod to-r ::string-array
+  [obj]
+  (REXPString. (into-array String obj) (r-atts-raw obj)))
 
 (defmethod to-r REXPFactor
   [obj]
   (let [ids (int-array obj)
         levels (:labels (:category-variable (meta obj)))]
-  (REXPFactor. (int-array obj)
-               (into-array (:labels (:category-variable (meta obj)))))))
+    (REXPFactor. (int-array obj)
+               (into-array (:labels (:category-variable (meta obj))))
+               (:r-atts (meta obj)))))
 
 (defmethod to-r org.rosuda.REngine.RList
   [obj]
@@ -165,11 +220,14 @@ otherwise"
 (defmethod to-r ::dataframe
   [dataset]
   (with-data dataset
-    (let [names (col-names dataset)
+    (let [names (into-array String (col-names dataset))
           col-meta (:col-meta (meta dataset))
-          cols (into [] (map #(let [col ($ %)] (with-meta col (col-meta (names %))))
-                             (range (count names))))]
-      (REXPGenericVector. (RList. (map #'to-r cols) (into-array names))))))
+          cols (into [] (map #(let [col ($ %)] (with-meta col (col-meta (aget names %))))
+                             (range (alength names))))
+          colarr (into-array REXP (map #(to-r %) cols))]
+      (REXPGenericVector.
+       (RList. colarr names)
+       (:r-atts (meta dataset))))))
 
 (defmethod to-r ::nil
   [obj]
