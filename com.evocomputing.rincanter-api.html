@@ -54,15 +54,21 @@ namespace.
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/r-eval">r-eval</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-eval-no-catch">r-eval-no-catch</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/r-eval-raw">r-eval-raw</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/r-get">r-get</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/r-get-raw">r-get-raw</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/r-set!">r-set!</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/r-try-parse-eval">r-try-parse-eval</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/with-r-eval">with-r-eval</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter/with-r-eval-no-catch">with-r-eval-no-catch</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter/with-r-eval-raw">with-r-eval-raw</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -75,6 +81,10 @@ namespace.
       <a href="#com.evocomputing.rincanter.convert/dataframe?">dataframe?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter.convert/def-from-r">def-from-r</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter.convert/from-r">from-r</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter.convert/prefer-primitive-type">prefer-primitive-type</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter.convert/r-attr">r-attr</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -89,6 +99,8 @@ namespace.
       <a href="#com.evocomputing.rincanter.convert/r-map-to-atts">r-map-to-atts</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#com.evocomputing.rincanter.convert/r-true">r-true</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#com.evocomputing.rincanter.convert/to-r">to-r</a>
     </div>
     <br />
   </div>
@@ -102,10 +114,10 @@ by <span id="author">Joel Boehland</span><br />
   (:require <span id="long-name">com.evocomputing.rincanter</span>))
 </pre><pre>
 </pre><h2>Overview</h2>
-<pre id="namespace-docstr">Rincanter is a clojure/incanter wrapper around the rosuda
+<pre id="namespace-docstr">Rincanter is a Clojure/incanter wrapper around the rosuda
 JRIEngine Java/R bridge. The hope is to allow easy access to an
-embedded R engine from incanter. It also offers translation between
-clojure/incanter datatypes and R datatypes such as R dataframe to
+embedded R engine from incanter. It also offers conversion between
+Clojure/incanter datatypes and R datatypes such as R dataframe to
 incanter dataset.</pre>
 <br />
 <h2>Public Variables and Functions</h2>
@@ -118,7 +130,7 @@ incanter dataset.</pre>
 </pre>
   <pre id="var-docstr">Get the jri-engine. If it doesn't exist, create it using the
 default init-jri-engine function and return it.</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L51" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L51" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -130,7 +142,7 @@ default init-jri-engine function and return it.</pre>
   <pre id="var-docstr">Initialize the jri engine. This can only be done once in the
 lifetime of the jvm-- not our rules- that's how the embedded R engine
 seems to want things.</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L34" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L34" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -138,8 +150,19 @@ seems to want things.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (r-eval expression)
 </pre>
-  <pre id="var-docstr">Eval expression in the R engine</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L70" id="var-source">Source</a>
+  <pre id="var-docstr">Eval expression in the R engine. Convert the return value from
+JRI/R to Clojure</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L82" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-eval-no-catch">r-eval-no-catch</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-eval-no-catch expression)
+</pre>
+  <pre id="var-docstr">Eval expression in the R engine. Will not catch any exceptions that
+happen during evaluation</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L63" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -147,9 +170,9 @@ seems to want things.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (r-eval-raw expression)
 </pre>
-  <pre id="var-docstr">Eval expression in the R engine. Will not catch any exceptions that
-happen during evaluation</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L63" id="var-source">Source</a>
+  <pre id="var-docstr">Eval expression in the R engine. Just return the raw JRI/R wrapper,
+don't convert to Clojure object</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L70" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -158,7 +181,16 @@ happen during evaluation</pre>
   <pre id="var-usage">Usage: (r-get r-name)
 </pre>
   <pre id="var-docstr">Retrieve the value with this name in the R engine</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L127" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L145" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/r-get-raw">r-get-raw</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (r-get-raw r-name)
+</pre>
+  <pre id="var-docstr">Retrieve the value with this name in the R engine</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L140" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -167,7 +199,7 @@ happen during evaluation</pre>
   <pre id="var-usage">Usage: (r-set! r-name val)
 </pre>
   <pre id="var-docstr">Assign r-name to val within the R engine</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L118" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L131" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -178,7 +210,7 @@ happen during evaluation</pre>
   <pre id="var-docstr">Eval expression in the R engine, wrapped (on the R side) in
 try/catch. Will catch errors on the R side and convert to Exception
 and throw</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L81" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L88" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -187,8 +219,18 @@ and throw</pre>
   <pre id="var-usage">Usage: (with-r-eval &amp; forms)
 </pre>
   <pre id="var-docstr">Evaluate forms that are string using r-eval, otherwise, just eval
+Clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L119" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="com.evocomputing.rincanter/with-r-eval-no-catch">with-r-eval-no-catch</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (with-r-eval-no-catch &amp; forms)
+</pre>
+  <pre id="var-docstr">Evaluate forms that are string using r-eval-no-catch, otherwise, just eval
 clojure code normally</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L106" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L107" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -196,9 +238,9 @@ clojure code normally</pre>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (with-r-eval-raw &amp; forms)
 </pre>
-  <pre id="var-docstr">Evaluate forms that are string using r-eval, otherwise, just eval
-clojure code normally</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L100" id="var-source">Source</a>
+  <pre id="var-docstr">Evaluate forms that are string using r-eval-raw, otherwise, just eval
+Clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L113" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -207,8 +249,8 @@ clojure code normally</pre>
   <pre id="var-usage">Usage: (with-r-try-parse-eval &amp; forms)
 </pre>
   <pre id="var-docstr">Evaluate forms that are string using r-try-parse-eval, otherwise
-just eval clojure code normally</pre>
-  <a href="http://github.com/jolby/rincanter/blob/4c8d62620a751c7b22fc5c9220e592cd5f346597/src/com/evocomputing/rincanter.clj#L112" id="var-source">Source</a>
+just eval Clojure code normally</pre>
+  <a href="http://github.com/jolby/rincanter/blob/d2ec83231e74deb946b0028a3d0779c688bf3eeb/src/com/evocomputing/rincanter.clj#L125" id="var-source">Source</a>
 </div>
 <h2 id="namespace-name">com.evocomputing.rincanter.convert</h2>
 <pre id="namespace-docstr">Convert between the rosuda Java/R wrapper types and Clojure types</pre>
@@ -219,9 +261,9 @@ just eval clojure code normally</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (dataframe? rexp)
 </pre>
-  <pre id="var-docstr">Returns true if the passed in object is an R dataframe, nil
+  <pre id="var-docstr">Returns true if the passed in object is an R dataframe, false
 otherwise</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L79" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L81" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/def-from-r">def-from-r</h2>
@@ -229,7 +271,22 @@ otherwise</pre>
   <pre id="var-usage">Usage: (def-from-r rexp type &amp; convert-forms)
 </pre>
   <pre id="var-docstr">Define a from-r method using standard boilerplate</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L97" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L101" id="var-source">Source</a>
+</div><div id="var-entry">
+  <hr />
+  <h2 id="com.evocomputing.rincanter.convert/from-r">from-r</h2>
+  <span id="var-type">multimethod</span><br />
+  <pre id="var-usage">No usage documentation available</pre>
+  <pre id="var-docstr">Convert the rosuda JRI/R type to a matching Clojure type</pre>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L97" id="var-source">Source</a>
+</div><div id="var-entry">
+  <hr />
+  <h2 id="com.evocomputing.rincanter.convert/prefer-primitive-type">prefer-primitive-type</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (prefer-primitive-type class)
+</pre>
+  <pre id="var-docstr">If possible, ensure array is one of the primitive types. Convert if neccessary</pre>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L164" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-attr">r-attr</h2>
@@ -237,7 +294,7 @@ otherwise</pre>
   <pre id="var-usage">Usage: (r-attr rexp attr-name)
 </pre>
   <pre id="var-docstr">Returns the attribute with the passed in name, or nil.</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L36" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L36" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-attr-names">r-attr-names</h2>
@@ -245,7 +302,7 @@ otherwise</pre>
   <pre id="var-usage">Usage: (r-attr-names rexp)
 </pre>
   <pre id="var-docstr">Return a seq of attributes, or nil if the REXP has no attributes</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L29" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L29" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-atts">r-atts</h2>
@@ -253,7 +310,7 @@ otherwise</pre>
   <pre id="var-usage">Usage: (r-atts rexp)
 </pre>
   <pre id="var-docstr">Returns a map of the R object's attribute-names -&gt; attributes, or nil.</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L48" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L50" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-atts-raw">r-atts-raw</h2>
@@ -262,15 +319,15 @@ otherwise</pre>
 </pre>
   <pre id="var-docstr">Returns the JRI object representing the R attributes for this object
 or nil if there are no attributes</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L54" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L56" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-has-attr?">r-has-attr?</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (r-has-attr? rexp attr-name)
 </pre>
-  <pre id="var-docstr">Returns the attribute with the passed in name, or nil.</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L42" id="var-source">Source</a>
+  <pre id="var-docstr">Returns true if the attribute with the passed in name exists, or false.</pre>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L42" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-map-to-atts">r-map-to-atts</h2>
@@ -279,7 +336,7 @@ or nil if there are no attributes</pre>
 </pre>
   <pre id="var-docstr">Converts a map into the nested list form that rosuda JRI seems to
 want in its constructors</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L61" id="var-source">Source</a>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L63" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="com.evocomputing.rincanter.convert/r-true">r-true</h2>
@@ -287,8 +344,15 @@ want in its constructors</pre>
   <pre id="var-usage">Usage: (r-true seq)
 </pre>
   <pre id="var-docstr">Most R variables are collections. This tests a sequence for
-equality with 1. Returns true if all equal 1 or true, false otherwise</pre>
-  <a href="http://github.com/jolby/rincanter/blob/2966ce50662147640d73d33985a76878036ee2f0/src/com/evocomputing/rincanter/convert.clj#L69" id="var-source">Source</a>
+equality with 1 or boolean true. Returns true if all equal 1 or true, false otherwise</pre>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L71" id="var-source">Source</a>
+</div><div id="var-entry">
+  <hr />
+  <h2 id="com.evocomputing.rincanter.convert/to-r">to-r</h2>
+  <span id="var-type">multimethod</span><br />
+  <pre id="var-usage">No usage documentation available</pre>
+  <pre id="var-docstr">Convert the Clojure type to the proper rosuda JRI/R type</pre>
+  <a href="http://github.com/jolby/rincanter/blob/db4e03df9a6fd7904d5373f100588338cb9b6853/src/com/evocomputing/rincanter/convert.clj#L186" id="var-source">Source</a>
 </div>
 
 
