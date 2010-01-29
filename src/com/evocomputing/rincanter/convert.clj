@@ -175,7 +175,6 @@ otherwise"
         (:r-type (meta obj))) (:r-type (meta obj))
    (#{"[B" "[Ljava.lang.Byte;"} (.getName (class obj))) ::byte-array
    (#{"[I" "[Ljava.lang.Integer;"} (.getName (class obj))) ::int-array
-   (#{"[F" "[Ljava.lang.Float;"} (.getName (class obj))) ::float-array
    (#{"[D" "[Ljava.lang.Double;"} (.getName (class obj))) ::double-array
    (= "[Ljava.lang.String;" (.getName (class obj))) ::string-array
    ;;These must go after the array tests or infinite recursion will
