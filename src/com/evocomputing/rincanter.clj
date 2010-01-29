@@ -13,7 +13,7 @@
 (ns #^{:doc
        "Rincanter is a Clojure/incanter wrapper around the rosuda
 JRIEngine Java/R bridge. The hope is to allow easy access to an
-embedded R engine from incanter. It also offers translation between
+embedded R engine from incanter. It also offers conversion between
 Clojure/incanter datatypes and R datatypes such as R dataframe to
 incanter dataset."
        :author "Joel Boehland"}
