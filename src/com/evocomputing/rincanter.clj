@@ -60,15 +60,16 @@ seems to want things."
           (throw (IllegalStateException.
                   "Unable to initialize JRIEngine"))))))
 
-(defn r-eval-raw
+(defn r-eval-no-catch
   "Eval expression in the R engine. Will not catch any exceptions that
   happen during evaluation"
   [expression]
   (let [r (get-jri-engine)]
     (.parseAndEval r expression)))
 
-(defn r-eval
-  "Eval expression in the R engine"
+(defn r-eval-raw
+  "Eval expression in the R engine. Just return the raw JRI/R wrapper,
+  don't convert to Clojure object"
   [expression]
   (let [r (get-jri-engine)]
     (try
@@ -77,6 +78,12 @@ seems to want things."
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex)))
      (catch REXPMismatchException ex
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
+
+(defn r-eval
+  "Eval expression in the R engine. Convert the return value from
+  JRI/R to Clojure"
+  [expression]
+  (from-r (r-eval-raw expression)))
 
 (defn r-try-parse-eval
   "Eval expression in the R engine, wrapped (on the R side) in
@@ -97,11 +104,17 @@ and throw"
      (catch REXPMismatchException ex
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
 
-(defmacro with-r-eval-raw
-  "Evaluate forms that are string using r-eval-raw, otherwise, just eval
+(defmacro with-r-eval-no-catch
+  "Evaluate forms that are string using r-eval-no-catch, otherwise, just eval
 clojure code normally"
   [& forms]
-  `(do ~@(map #(if (string? %) (list 'r-eval-raw %) %) forms)))
+  `(do ~@(map #(if (string? %) (list 'r-eval-no-catch %) %) forms)))
+
+(defmacro with-r-eval-raw
+  "Evaluate forms that are string using r-eval-raw, otherwise, just eval
+  clojure code normally"
+  [& forms]
+  `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
 
 (defmacro with-r-eval
   "Evaluate forms that are string using r-eval, otherwise, just eval
@@ -123,6 +136,11 @@ clojure code normally"
      (.assign r r-name val)
      (catch REngineException ex
        (println (format "Caught exception assigning R val: %s\n: %s" r-name ex))))))
+
+(defn r-get-raw
+  "Retrieve the value with this name in the R engine"
+  [r-name]
+  (r-eval-raw r-name))
 
 (defn r-get
   "Retrieve the value with this name in the R engine"

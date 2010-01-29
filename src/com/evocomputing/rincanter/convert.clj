@@ -212,7 +212,7 @@ otherwise"
 
 (defmethod to-r REXPLogical
   [obj]
-  (REXPLogical. (byte-array obj) (r-atts-raw obj)))
+  (REXPLogical. (byte-array (map #'byte obj)) (r-atts-raw obj)))
 
 (defmethod to-r ::byte-array
   [obj]

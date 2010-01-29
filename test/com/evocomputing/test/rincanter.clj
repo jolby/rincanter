@@ -16,19 +16,50 @@
 (deftest to-r-conversions
   (is (= REXPLogical (class (to-r (into-array Byte/TYPE (map #'byte [1 2 3]))))))
   (is (= REXPInteger (class (to-r (into-array Integer/TYPE [1 2 3])))))
-  (is (= REXPDouble (class (to-r (into-array Double/TYPE [1.0 2.0 3.0]))))))
+  (is (= REXPDouble (class (to-r (into-array Double/TYPE [1.0 2.0 3.0])))))
+  (is (= REXPString (class (to-r (into-array String ["fee" "fie" "foe"])))))
+  ;;test types with meta data hints set
+  (is (= REXPLogical (class (to-r (with-meta [1 2 3] {:r-type REXPLogical})))))
+  (is (= REXPInteger (class (to-r (with-meta [1 2 3] {:r-type REXPInteger})))))
+  (is (= REXPDouble (class (to-r (with-meta [1 2 3] {:r-type REXPDouble})))))
+  (is (= REXPDouble (class (to-r (with-meta [1.0 2.0 3.0] {:r-type REXPDouble})))))
+  (is (= REXPString (class (to-r (with-meta ["fee" "fie" "foe"] {:r-type REXPString})))))
+  ;;seq conversions
+  (is (= REXPInteger (class (to-r [1 2 3]))))
+  (is (= REXPDouble (class (to-r [1.9 2.0 3.9]))))
+  )
+
+(deftest pass-through-int-vector
+  (r-set! "iv1" (to-r [1 2 3]))
+  (is (= [1 2 3] (r-get "iv1"))))
+
+(deftest from-r-int-vector
+  (r-eval "iv2 = c(1, 2, 3)")
+  (is (= [1 2 3] (r-get "iv2"))))
+
+(deftest pass-through-double-vector
+  (r-set! "dv1" (to-r [1.0 2.0 3.0]))
+  (is (= [1.0 2.0 3.0] (r-get "dv1"))))
+
+(deftest from-r-double-vector
+  (r-eval "dv2 = c(1.0, 2.0, 3.0)")
+  (is (= [1.0 2.0 3.0] (r-get "dv2"))))
 
 (deftest convert-dataframe-to-dataset
   (with-r-eval
     "data(iris)"
     ;;starts off an R dataframe, turns into an incanter dataset
-    (is (= (type (from-r (r-get "iris"))) :incanter.core/dataset))))
+    (is (= (type (r-get "iris")) :incanter.core/dataset))))
 
-(deftest pass-dataframe-through-equivalence
+(deftest dataframe-dataset-dim-equivalence
+  (is (= [150 5] (r-eval "dim(iris)")))
+  (is (= [150 5] (dim (r-get "iris")))))
+
+(deftest pass-through-dataframe-equivalence
   (with-r-eval
     "data(iris)"
     ;;convert iris dataframe to an incanter dataset, then convert back
     ;;to an R dataframe and set it in the R environment
-    (r-set! "irisds" (to-r (from-r (r-get "iris"))))
+    (r-set! "irisds" (to-r (r-get "iris")))
     ;;irisds is now an R dataframe it should be identical to iris dataframe
-    (is (r-true (from-r (r-eval "identical(irisds, iris)"))))))
+    (is (r-true (r-eval "identical(irisds, iris)")))))
