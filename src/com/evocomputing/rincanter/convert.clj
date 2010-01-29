@@ -40,10 +40,12 @@
     (.getAttribute rexp attr-name)))
 
 (defn r-has-attr?
-  "Returns the attribute with the passed in name, or nil."
+  "Returns true if the attribute with the passed in name exists, or false."
   [rexp attr-name]
-  (when (.isInstance org.rosuda.REngine.REXP rexp)
-    (.hasAttribute rexp attr-name)))
+  (if (and (.isInstance org.rosuda.REngine.REXP rexp)
+           (.hasAttribute rexp attr-name))
+    true
+    false))
 
 (defn r-atts
   "Returns a map of the R object's attribute-names -> attributes, or nil."
@@ -77,13 +79,13 @@ equality with 1. Returns true if all equal 1 or true, false otherwise"
 ;;===========================================================================
 ;;
 (defn dataframe?
-  "Returns true if the passed in object is an R dataframe, nil
+  "Returns true if the passed in object is an R dataframe, false
 otherwise"
   [rexp]
   (if (some #{"data.frame"}
             (-?> rexp (r-attr "class") .asStrings))
     true
-    nil))
+    false))
 
 (defn from-r-dispatch
   [rexp]
@@ -92,7 +94,9 @@ otherwise"
    (dataframe? rexp) ::dataframe
    true (class rexp)))
 
-(defmulti from-r from-r-dispatch)
+(defmulti from-r
+"Convert the rosuda JRI/R type to a matching Clojure type"
+  from-r-dispatch)
 
 (defmacro def-from-r
   "Define a from-r method using standard boilerplate"
@@ -151,6 +155,17 @@ otherwise"
   [rexp]
   nil)
 
+(def *object-type-to-primitive-type-map*
+     {java.lang.Byte Byte/TYPE
+      java.lang.Integer Integer/TYPE
+      java.lang.Float Float/TYPE
+      java.lang.Double Double/TYPE})
+
+(defn prefer-primitive-type
+  "If possible, ensure array is one of the primitive types. Convert if neccessary"
+  [class]
+  (or (*object-type-to-primitive-type-map* class) class))
+
 (defn to-r-dispatch
   [obj]
   (cond
@@ -158,20 +173,35 @@ otherwise"
    (.isInstance org.rosuda.REngine.REXP obj) ::rexp
    (and (meta obj)
         (:r-type (meta obj))) (:r-type (meta obj))
-   (= "[B" (.getName (class obj))) ::byte-array
-   (= "[I" (.getName (class obj))) ::int-array
-   (= "[F" (.getName (class obj))) ::float-array
-   (= "[D" (.getName (class obj))) ::double-array
+   (#{"[B" "[Ljava.lang.Byte;"} (.getName (class obj))) ::byte-array
+   (#{"[I" "[Ljava.lang.Integer;"} (.getName (class obj))) ::int-array
+   (#{"[F" "[Ljava.lang.Float;"} (.getName (class obj))) ::float-array
+   (#{"[D" "[Ljava.lang.Double;"} (.getName (class obj))) ::double-array
    (= "[Ljava.lang.String;" (.getName (class obj))) ::string-array
+   ;;These must go after the array tests or infinite recursion will
+   ;;take place
+   (seq? obj) ::seq
+   (seqable? obj) ::seqable
    true (class obj)))
 
-(defmulti to-r to-r-dispatch)
+(defmulti to-r
+"Convert the Clojure type to the proper rosuda JRI/R type"
+  to-r-dispatch)
 
 (defmethod to-r ::rexp
   [obj]
   ;;This obj is already converted to one of the JRI types
   ;;just return it.
   obj)
+
+(defmethod to-r ::seq
+  [obj]
+  (let [type (prefer-primitive-type (.getClass (first obj)))]
+  (to-r (into-array type obj))))
+
+(defmethod to-r ::seqable
+  [obj]
+  (to-r (seq obj)))
 
 (defmethod to-r REXPInteger
   [obj]
@@ -184,6 +214,10 @@ otherwise"
 (defmethod to-r REXPLogical
   [obj]
   (REXPLogical. (byte-array obj) (r-atts-raw obj)))
+
+(defmethod to-r ::byte-array
+  [obj]
+  (REXPLogical. obj (r-atts-raw obj)))
 
 (defmethod to-r REXPDouble
   [obj]

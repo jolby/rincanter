@@ -98,7 +98,7 @@ and throw"
        (println (format "Caught exception evaluating expression: %s\n: %s" expression ex))))))
 
 (defmacro with-r-eval-raw
-  "Evaluate forms that are string using r-eval, otherwise, just eval
+  "Evaluate forms that are string using r-eval-raw, otherwise, just eval
 clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval-raw %) %) forms)))
