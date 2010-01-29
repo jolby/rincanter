@@ -3,16 +3,26 @@
 Welcome to Rincanter!
 
 * About
+
   Rincanter is a clojure/incanter wrapper around the rosuda JRIEngine
   Java/R bridge. The hope is to allow easy access to an embedded R
   engine from incanter. It also offers translation between
   clojure/incanter datatypes and R datatypes such as R dataframe to
   incanter dataset.
+
 * Install
-  As rincanter sits on top the org.rosuda JRI and JRIEngine packages,
+
+  As rincanter sits on top the R and the org.rosuda JRI and JRIEngine packages,
   you will need install these to use rincanter. This can be a bit
   tricky, as the JRI component needs to compile some native JNI libs
   and install them on the java.library.path in order to run.
+
+** Install R for your platform
+
+   The directions for installing R are outside the scope of this
+   document, but R is well supported on most platforms, and has great
+   documentation: [[http://cran.r-project.org/][R Project Page]]
+
 ** Download and Install the rosuda JRI and REngine components
    
    You will need to download and build the rosuda JRIEngine
@@ -25,31 +35,35 @@ Welcome to Rincanter!
    configure && make
 #+END_EXAMPLE
 
-You will now have a jri library file in this directory. Depending on
-your platform it will have a name like: libjri.so (linux)
-libjri.jnilib (Mac OS X) jri.dll (Windows)
+   You will now have a jri native library file in this directory. Depending on
+   your platform it will have a name like: 
+
+   - libjri.so (linux)
+   - libjri.jnilib (Mac OS X) 
+   - jri.dll (Windows)
 
 #+BEGIN_EXAMPLE 
   cd ../REngine
   configure && make
 #+END_EXAMPLE
 
-You will now have an REngine.jar file in this directory.
+  You will now have an REngine.jar file in this directory.
 
 #+BEGIN_EXAMPLE 
   cd JRI # this is a child dir of REngine, different from the JRI dir above
   configure && make
 #+END_EXAMPLE
 
-You will now have an JRIEngine.jar file in this directory.
+  You will now have an JRIEngine.jar file in this directory.
 
 ** Install incanter from git
-I am using features in incanter that are in git but not up on clojars
-yet. You will need to pull incanter from github and from the incanter
-directory run:
+
+   I am using features in incanter that are in git but not up on clojars
+   yet. You will need to pull incanter from github and from the incanter
+   directory run:
 
 #+BEGIN_EXAMPLE 
-  lein install
+   lein install
 #+END_EXAMPLE
 
 ** Install rincanter from git
@@ -60,25 +74,54 @@ directory run:
    lein deps # this installs incanter and its deps into the lib subdir
 #+END_EXAMPLE
 
-Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the
-lib directory of the rincanter project. Then move the native jri lib
-into the root of the rincanter project.
+   Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the
+   lib directory of the rincanter project. Then move the native jri lib
+   into the root of the rincanter project.
 
-Now you are ready to download rincanter and run it:
+** Make sure R_HOME is set
+   On some platforms or installations, you may also need to set the
+   environment variable R_HOME. The value you use for R_HOME will
+   depend on your particular installation, but following are typical
+   values for setting R_HOME in the shell and in emacs for Mac OS X:
 
+   shell:
 #+BEGIN_EXAMPLE 
-  lein test
+  R_HOME=/Library/Frameworks/R.framework/Resources/
 #+END_EXAMPLE
 
-To start a swank-repl: 
+  For emacs, in your scratch buffer, enter the folling line:
+#+BEGIN_EXAMPLE 
+  (setenv "R_HOME" "/Library/Frameworks/R.framework/Resources/")
+#+END_EXAMPLE
+
+  Then, go to the end of that line and execute the key-command:
+
+#+begin_example 
+  C-x C-e
+#+end_example
+
+  ..to execute the elisp form in your running emacs. You can also put
+  that form in one of your emacs startup files if you want R_HOME to
+  always be set.
+
+   Now you are ready to download rincanter and run it:
 
 #+BEGIN_EXAMPLE 
-  lein repl
+   lein test
+#+END_EXAMPLE
+
+   To start a swank-repl: 
+
+
+
+#+BEGIN_EXAMPLE 
+   lein repl
 #+END_EXAMPLE
 
 
 * Example Usage
 * Documentation
 ** API Documentation
+
    API Documentation for rincanter is located at:
    [[http://jolby.github.com/rincanter][Rincanter API]]
