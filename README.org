@@ -1,3 +1,7 @@
+#+OPTIONS: author:nil timestamp:nil
+
+Welcome to Rincanter!
+
 * About
   Rincanter is a clojure/incanter wrapper around the rosuda JRIEngine
   Java/R bridge. The hope is to allow easy access to an embedded R
