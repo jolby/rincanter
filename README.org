@@ -132,8 +132,7 @@ Welcome to Rincanter!
 
 ** r-eval
 You can play around with Clojure/Incanter and R in the same REPL session:
-#+srcname: r-eval-example
-#+begin_src clojure
+#+BEGIN_EXAMPLE clojure
    (r-eval "data(iris)")
 
    ;;eval's the iris dataframe object, converts into
@@ -145,15 +144,15 @@ You can play around with Clojure/Incanter and R in the same REPL session:
    
    ;;now retrieve it, converting to Clojure vector
    (r-get "vec_in_r")
-#+end_src
+#+END_EXAMPLE
  
 ** with-r-eval
 Using with-r-eval, it is even easier. Within this form, all forms
 enclosed in parenthesis are evaluated as normal Clojure forms, strings
 are evaluated in R using r-eval:
 
-#+srcname: with-r-eval-example
-#+begin_src clojure
+
+#+BEGIN_EXAMPLE clojure
    (with-r-eval 
      "data(iris)"
 
@@ -166,7 +165,7 @@ are evaluated in R using r-eval:
    
      ;;now retrieve it, converting to Clojure vector
      (r-get "vec_in_r"))
-#+end_src
+#+END_EXAMPLE
 
 
 * Documentation
