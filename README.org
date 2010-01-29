@@ -78,48 +78,97 @@ Welcome to Rincanter!
    lib directory of the rincanter project. Then move the native jri lib
    into the root of the rincanter project.
 
-** Make sure R_HOME is set
+** Make sure R_HOME is set (only if needed)
    On some platforms or installations, you may also need to set the
    environment variable R_HOME. The value you use for R_HOME will
    depend on your particular installation, but following are typical
    values for setting R_HOME in the shell and in emacs for Mac OS X:
 
+   - Note for shell: On some systems, R_HOME may already be set, so
+   this step is optional.
+
    shell:
 #+BEGIN_EXAMPLE 
-  R_HOME=/Library/Frameworks/R.framework/Resources/
+  R_HOME=/Library/Frameworks/R.framework/Resources; export R_HOME
 #+END_EXAMPLE
 
-  For emacs, in your scratch buffer, enter the folling line:
+  You can also set this in one of your .profile files to ensure that
+  it is always set in your shell. 
+
+  For emacs, in your scratch buffer, enter the elisp form:
 #+BEGIN_EXAMPLE 
-  (setenv "R_HOME" "/Library/Frameworks/R.framework/Resources/")
+  (setenv "R_HOME" "/Library/Frameworks/R.framework/Resources")
 #+END_EXAMPLE
 
   Then, go to the end of that line and execute the key-command:
 
-#+begin_example 
+#+BEGIN_EXAMPLE 
   C-x C-e
-#+end_example
+#+END_EXAMPLE
 
   ..to execute the elisp form in your running emacs. You can also put
   that form in one of your emacs startup files if you want R_HOME to
   always be set.
 
+** Test and Run
    Now you are ready to download rincanter and run it:
 
+   To run the unit tests:
 #+BEGIN_EXAMPLE 
    lein test
 #+END_EXAMPLE
 
-   To start a swank-repl: 
-
-
-
+   To start a swank-repl:
 #+BEGIN_EXAMPLE 
    lein repl
 #+END_EXAMPLE
 
-
 * Example Usage
+  The main entry points are the functions:
+  - [[http://jolby.github.com/rincanter/com.evocomputing.rincanter-api.html#com.evocomputing.rincanter/r-eval][r-eval]]
+  - [[http://jolby.github.com/rincanter/com.evocomputing.rincanter-api.html#com.evocomputing.rincanter/with-r-eval][with-r-eval]]
+  - [[http://jolby.github.com/rincanter/com.evocomputing.rincanter-api.html#com.evocomputing.rincanter/r-set!][r-set!]]
+  - [[http://jolby.github.com/rincanter/com.evocomputing.rincanter-api.html#com.evocomputing.rincanter/r-get][r-get]]
+
+** r-eval
+You can play around with Clojure/Incanter and R in the same REPL session:
+#+srcname: r-eval-example
+#+begin_src clojure
+   (r-eval "data(iris)")
+
+   ;;eval's the iris dataframe object, converts into
+   ;;incanter dataset
+   (r-eval "iris")
+ 
+   ;;create vector on R side
+   (r-eval "vec_in_r = c(1,2,3)")
+   
+   ;;now retrieve it, converting to Clojure vector
+   (r-get "vec_in_r")
+#+end_src
+ 
+** with-r-eval
+Using with-r-eval, it is even easier. Within this form, all forms
+enclosed in parenthesis are evaluated as normal Clojure forms, strings
+are evaluated in R using r-eval:
+
+#+srcname: with-r-eval-example
+#+begin_src clojure
+   (with-r-eval 
+     "data(iris)"
+
+     ;;eval's the iris dataframe object, converts into
+     ;;incanter dataset
+     "iris"
+ 
+     ;;create vector on R side
+     "vec_in_r = c(1,2,3)"
+   
+     ;;now retrieve it, converting to Clojure vector
+     (r-get "vec_in_r"))
+#+end_src
+
+
 * Documentation
 ** API Documentation
 
