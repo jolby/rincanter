@@ -11,10 +11,10 @@
 
 
 (ns #^{:doc
-       "Rincanter is a clojure/incanter wrapper around the rosuda
+       "Rincanter is a Clojure/incanter wrapper around the rosuda
 JRIEngine Java/R bridge. The hope is to allow easy access to an
 embedded R engine from incanter. It also offers translation between
-clojure/incanter datatypes and R datatypes such as R dataframe to
+Clojure/incanter datatypes and R datatypes such as R dataframe to
 incanter dataset."
        :author "Joel Boehland"}
 
@@ -112,19 +112,19 @@ clojure code normally"
 
 (defmacro with-r-eval-raw
   "Evaluate forms that are string using r-eval-raw, otherwise, just eval
-  clojure code normally"
+  Clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
 
 (defmacro with-r-eval
   "Evaluate forms that are string using r-eval, otherwise, just eval
-  clojure code normally"
+  Clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-eval %) %) forms)))
 
 (defmacro with-r-try-parse-eval
   "Evaluate forms that are string using r-try-parse-eval, otherwise
-  just eval clojure code normally"
+  just eval Clojure code normally"
   [& forms]
   `(do ~@(map #(if (string? %) (list 'r-try-parse-eval %) %) forms)))
 

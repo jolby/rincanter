@@ -18,9 +18,13 @@
            (org.rosuda.REngine.JRI JRIEngine)
            (org.rosuda.JRI RMainLoopCallbacks))
   (:use (clojure test))
-  (:use (incanter core))
+  (:use (incanter core stats))
   (:use (com.evocomputing.rincanter convert))
   (:use (com.evocomputing rincanter)))
+
+;;taken from incanter information_theory_tests.clj
+(defn =within [delta x y]
+  (>= delta (abs (- x y))))
 
 (deftest can-connect-to-R
   (is (not (= nil get-jri-engine))))
@@ -75,3 +79,9 @@
     (r-set! "irisds" (to-r (r-get "iris")))
     ;;irisds is now an R dataframe it should be identical to iris dataframe
     (is (r-true (r-eval "identical(irisds, iris)")))))
+
+(deftest dataframe-dataset-mean
+  (with-data (r-get "iris")
+    (is (=within 0.000001
+                 (mean ($ :Sepal.Width))
+                 ((r-eval "mean(iris$Sepal.Width)") 0)))))

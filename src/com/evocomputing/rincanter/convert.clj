@@ -70,7 +70,7 @@ want in its constructors"
 
 (defn r-true
   "Most R variables are collections. This tests a sequence for
-equality with 1. Returns true if all equal 1 or true, false otherwise"
+equality with 1 or boolean true. Returns true if all equal 1 or true, false otherwise"
   [seq]
   (every? #(or (= 1 %) (true? %))  seq))
 
