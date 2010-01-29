@@ -1,6 +1,6 @@
 (ns com.evocomputing.test.rincanter
   (:import (org.rosuda.REngine REXP RList REXPGenericVector
-                               REXPInteger REXPDouble REXPString
+                               REXPInteger REXPDouble REXPString REXPLogical
                                RFactor REXPFactor
                                REngineException REXPMismatchException)
            (org.rosuda.REngine.JRI JRIEngine)
@@ -12,6 +12,11 @@
 
 (deftest can-connect-to-R
   (is (not (= nil get-jri-engine))))
+
+(deftest to-r-conversions
+  (is (= REXPLogical (class (to-r (into-array Byte/TYPE (map #'byte [1 2 3]))))))
+  (is (= REXPInteger (class (to-r (into-array Integer/TYPE [1 2 3])))))
+  (is (= REXPDouble (class (to-r (into-array Double/TYPE [1.0 2.0 3.0]))))))
 
 (deftest convert-dataframe-to-dataset
   (with-r-eval
