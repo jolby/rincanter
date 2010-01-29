@@ -14,6 +14,7 @@ Welcome to Rincanter!
   tricky, as the JRI component needs to compile some native JNI libs
   and install them on the java.library.path in order to run.
 ** Download and Install the rosuda JRI and REngine components
+
 #+begin_example 
    svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
    svn://svn.rforge.net/org/trunk/rosuda/JRI
