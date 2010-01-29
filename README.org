@@ -18,12 +18,12 @@ Welcome to Rincanter!
    You will need to download and build the rosuda JRIEngine
    components:
 
-#+begin_example 
+#+BEGIN_EXAMPLE 
    svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
    svn://svn.rforge.net/org/trunk/rosuda/JRI
    cd JRI
    configure && make
-#+end_example
+#+END_EXAMPLE
 
 You will now have a jri library file in this directory. Depending on
 your platform it will have a name like: libjri.so (linux)
