@@ -52,6 +52,17 @@ directory run:
   lein install
 #+END_EXAMPLE
 
+** Install rincanter from git
+
+#+BEGIN_EXAMPLE 
+   git clone git@github.com:jolby/rincanter.git
+   cd rincanter
+   lein deps # this installs incanter and its deps into the lib subdir
+#+END_EXAMPLE
+
+Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the
+lib directory of the rincanter project. Then move the native jri lib
+into the root of the rincanter project.
 
 Now you are ready to download rincanter and run it:
 
