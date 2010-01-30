@@ -156,7 +156,17 @@ clojure code normally"
     (dorun (map #'println  (r-eval (format "capture.output(str(%s))" obj))))
     (do
       (r-set! ".printtmp." (if (instance? REXP obj) obj (to-r obj)))
-      (dorun (map #'println  (r-eval "capture.output(str(.printtmp.))"))))))
+      (dorun (map #'println (r-eval "capture.output(str(.printtmp.))"))))))
+
+(defn r-install-CRAN
+  "Tries to install the provided package using the optionally provided
+repository or the master CRAN repository"
+  ([package]
+     (dorun (map #'println
+                 (r-eval (format "capture.output(install.packages(\"%s\", repos=\"http://cran.r-project.org\"))" package)))))
+  ([package repo]
+     (dorun (map #'println
+                 (r-eval (format "capture.output(install.packages(\"%s\", repos=\"%s\"))" package repo))))))
 
 ;;
 ;;Inspection, typechecking and print methods
