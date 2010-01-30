@@ -63,12 +63,14 @@ Welcome to Rincanter!
    directory run:
 
 #+BEGIN_EXAMPLE 
-   lein install
+   git clone git://github.com/liebke/incanter.git
+   cd incanter
+   mvn install
 #+END_EXAMPLE
 
 ** Install rincanter from git
 
-#+BEGIN_EXAMPLE 
+#+BEGIN_EXAMPLE
    git clone git@github.com:jolby/rincanter.git
    cd rincanter
    lein deps # this installs incanter and its deps into the lib subdir
