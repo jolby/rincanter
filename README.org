@@ -87,7 +87,7 @@ Welcome to Rincanter!
    values for setting R_HOME in the shell and in emacs for Mac OS X:
 
    - Note for shell: On some systems, R_HOME may already be set, so
-   this step is optional.
+     this step is optional.
 
    shell:
 #+BEGIN_EXAMPLE 
