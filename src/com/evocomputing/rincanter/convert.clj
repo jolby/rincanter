@@ -14,7 +14,7 @@
        :author "Joel Boehland"}
 
   com.evocomputing.rincanter.convert
-  (:import (org.rosuda.REngine REXP RList REXPList REXPVector REXPGenericVector
+  (:import (org.rosuda.REngine REXPNull REXP RList REXPList REXPVector REXPGenericVector
                                REXPInteger REXPDouble REXPString REXPLogical
                                RFactor REXPFactor
                                REngineException REXPMismatchException)
@@ -150,6 +150,9 @@ otherwise"
                               {:col-meta col-meta
                                :r-type ::dataframe
                                :r-atts (r-atts-raw dataframe)}))))
+(defmethod from-r REXPNull
+  [rexp]
+  nil)
 
 (defmethod from-r ::nil
   [rexp]

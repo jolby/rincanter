@@ -147,6 +147,16 @@ clojure code normally"
   [r-name]
   (r-eval r-name))
 
+(defn r-inspect
+  "Runs str(object) on the R side, capturing console output. Runs
+  println on returned Strings"
+  [obj]
+  (if (string? obj)
+    (dorun (map #'println  (r-eval (format "capture.output(str(%s))" obj))))
+    (do
+      (r-set! ".printtmp." (if (instance? REXP obj) obj (to-r obj)))
+      (dorun (map #'println  (r-eval "capture.output(str(.printtmp.))"))))))
+
 ;;
 ;;Inspection, typechecking and print methods
 ;;===========================================================================
