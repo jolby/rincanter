@@ -138,7 +138,8 @@ clojure code normally"
        (println (format "Caught exception assigning R val: %s\n: %s" r-name ex))))))
 
 (defn r-get-raw
-  "Retrieve the value with this name in the R engine"
+  "Retrieve the value with this name in the R engine. Do not convert
+  from JRI to Clojure type."
   [r-name]
   (r-eval-raw r-name))
 
