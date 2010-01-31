@@ -147,6 +147,24 @@ You can play around with Clojure/Incanter and R in the same REPL session:
    ;;now retrieve it, converting to Clojure vector
    (r-get "vec_in_r")
 #+END_EXAMPLE
+
+plotting:
+#+BEGIN_EXAMPLE
+   (r-eval "data(iris)")
+   
+   ;;initialize the R graphics device for your system:
+   ;;For Mac OS X
+   (r-eval "quartz()")
+   ;;windows: 
+   (r-eval "windows()")
+   ;;unix/linux
+   (r-eval "x11()")
+
+   ;;create the plot using values from the iris dataset
+   (r-eval "plot(Sepal.Length ~ Sepal.Width, data = iris)")
+   ;;alter this existing plot
+   (r-eval "title(main = \"Iris Sepal Measurements\")")
+#+END_EXAMPLE
  
 ** with-r-eval
 Using with-r-eval, it is even easier. Within this form, all forms
