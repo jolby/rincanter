@@ -136,6 +136,9 @@ otherwise"
      :r-atts (r-atts-raw rexp)
      :category-variable (r-factor-to-categorical-var rexp)}))
 
+;;catch-all
+(defmethod from-r REXP [rexp] rexp)
+
 (defmethod from-r ::dataframe
   [dataframe]
   (if-not (dataframe? dataframe)
