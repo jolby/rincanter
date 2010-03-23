@@ -135,6 +135,8 @@ Welcome to Rincanter!
 ** r-eval
 You can play around with Clojure/Incanter and R in the same REPL session:
 #+BEGIN_EXAMPLE clojure
+   (use '(com.evocomputing rincanter))
+
    (r-eval "data(iris)")
 
    ;;eval's the iris dataframe object, converts into
@@ -150,6 +152,8 @@ You can play around with Clojure/Incanter and R in the same REPL session:
 
 plotting:
 #+BEGIN_EXAMPLE
+   (use '(com.evocomputing rincanter))
+
    (r-eval "data(iris)")
    
    ;;initialize the R graphics device for your system:
