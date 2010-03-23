@@ -1,6 +1,7 @@
 (defproject com.evocomputing/rincanter
   "1.0.0-SNAPSHOT"
   :description "Clojure/R integration using rosuda JRIEngine"
+  :repositories {"incanter" "http://repo.incanter.org"}
   :dependencies [[org.clojure/clojure "1.1.0"]
                  [org.clojure/clojure-contrib "1.0-SNAPSHOT"]
                  ;;commenting these out- they were made from my
