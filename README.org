@@ -177,6 +177,8 @@ are evaluated in R using r-eval:
 
 
 #+BEGIN_EXAMPLE clojure
+   (use '(com.evocomputing rincanter))
+
    (with-r-eval 
      "data(iris)"
 
