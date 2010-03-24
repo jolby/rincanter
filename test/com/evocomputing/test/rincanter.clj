@@ -27,7 +27,7 @@
   (>= delta (abs (- x y))))
 
 (deftest can-connect-to-R
-  (is (not (= nil get-jri-engine))))
+  (is (not (= nil (get-jri-engine)))))
 
 (deftest to-r-conversions
   (is (= REXPLogical (class (to-r (into-array Byte/TYPE (map #'byte [1 2 3]))))))
