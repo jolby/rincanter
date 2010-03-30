@@ -26,6 +26,11 @@
 (defn =within [delta x y]
   (>= delta (abs (- x y))))
 
+(defn jri-engine-fixture [test-fn]
+  (get-jri-engine)
+  (test-fn)
+  (.close (get-jri-engine)))
+
 (deftest can-connect-to-R
   (is (not (= nil (get-jri-engine)))))
 
@@ -85,3 +90,5 @@
     (is (=within 0.000001
                  (mean ($ :Sepal.Width))
                  ((r-eval "mean(iris$Sepal.Width)") 0)))))
+
+(use-fixtures :once jri-engine-fixture)
