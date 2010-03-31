@@ -4,12 +4,12 @@ Welcome to Rincanter!
 
 * About
 
-  Rincanter is a [[http://clojure.org][Clojure]]/[[http://data-sorcery.org/][Incanter]] wrapper around the 
+  Rincanter is a [[http://clojure.org][Clojure]] and [[http://data-sorcery.org/][Incanter]] wrapper around the 
   Rosuda [[http://www.rforge.net/rJava/][JRIEngine Java/R bridge]].
   The hope is to allow easy access to an embedded R
   engine from Incanter. It also offers translation between
-  [[http://clojure.org][Clojure]]/[[http://data-sorcery.org/][Incanter]] datatypes and R datatypes such as R dataframe to
-  Incanter dataset.
+  [[http://clojure.org][Clojure]] and [[http://data-sorcery.org/][Incanter]] datatypes and R datatypes such as R dataframe to
+  [[http://data-sorcery.org/][Incanter]] dataset.
 
 * Install
   
