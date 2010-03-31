@@ -73,9 +73,21 @@ Welcome to Rincanter!
    lein test
 #+END_EXAMPLE
 
-   To start a swank-repl:
+   To start a repl:
 #+BEGIN_EXAMPLE 
    lein repl
+#+END_EXAMPLE
+
+   To start a swank session and connect with Emacs/SLIME:
+
+#+BEGIN_EXAMPLE 
+   lein swank
+#+END_EXAMPLE
+
+   ... then, in Emacs:
+
+#+BEGIN_EXAMPLE 
+   M-x slime-connect
 #+END_EXAMPLE
 
 * Example Usage
