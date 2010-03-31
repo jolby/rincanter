@@ -4,90 +4,32 @@ Welcome to Rincanter!
 
 * About
 
-  Rincanter is a clojure/incanter wrapper around the rosuda JRIEngine
+  Rincanter is a Clojure/Incanter wrapper around the rosuda JRIEngine
   Java/R bridge. The hope is to allow easy access to an embedded R
-  engine from incanter. It also offers translation between
-  clojure/incanter datatypes and R datatypes such as R dataframe to
-  incanter dataset.
+  engine from Incanter. It also offers translation between
+  Clojure/Incanter datatypes and R datatypes such as R dataframe to
+  Incanter dataset.
 
 * Install
-
-  As rincanter sits on top the R and the org.rosuda JRI and JRIEngine packages,
-  you will need install these to use rincanter. This can be a bit
-  tricky, as the JRI component needs to compile some native JNI libs
-  and install them on the java.library.path in order to run.
-
+  
+** Install Leiningen
+   Rincanter uses [[http://github.com/technomancy/leiningen][Leiningen]] to manage its dependencies on Clojure,
+   Incanter, and Rosuda JRI components. You will need to install
+   [[http://github.com/technomancy/leiningen][Leiningen]] following the instructions on its
+   [[http://github.com/technomancy/leiningen][project page]].
+  
 ** Install R for your platform
 
    The directions for installing R are outside the scope of this
    document, but R is well supported on most platforms, and has great
    documentation: [[http://cran.r-project.org/][R Project Page]]
 
-** Download and Install the rosuda JRI and REngine components
-   
-   You will need to download and build the rosuda JRIEngine
-   components:
 
-#+BEGIN_EXAMPLE 
-   svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
-   svn://svn.rforge.net/org/trunk/rosuda/JRI
-   cd JRI
-   configure && make
-#+END_EXAMPLE
-
-   You will now have a jri native library file in this directory. Depending on
-   your platform it will have a name like: 
-
-   - libjri.so (linux)
-   - libjri.jnilib (Mac OS X) 
-   - jri.dll (Windows)
-
-#+BEGIN_EXAMPLE 
-  cd ../REngine
-  make
-#+END_EXAMPLE
-
-  You will now have an REngine.jar file in this directory.
-
-#+BEGIN_EXAMPLE 
-  cd JRI # this is a child dir of REngine, different from the JRI dir above
-  make
-#+END_EXAMPLE
-
-  You will now have an JRIEngine.jar file in this directory.
-
-** Install incanter from git
-
-   I am using features in incanter that are in git but not up on clojars
-   yet. You will need to pull incanter from github and from the incanter
-   directory run:
-
-#+BEGIN_EXAMPLE 
-   git clone git://github.com/liebke/incanter.git
-   cd incanter
-   mvn install
-#+END_EXAMPLE
-
-** Install rincanter from git
-
-#+BEGIN_EXAMPLE
-   git clone git://github.com/jolby/rincanter.git
-   cd rincanter
-   lein deps # this installs incanter and its deps into the lib subdir
-#+END_EXAMPLE
-
-   Now, move the two .jar files (REngine.jar and JRIEngine.jar) into the
-   lib directory of the rincanter project. Then move the native jri lib
-   into the root of the rincanter project.
-
-** Make sure R_HOME is set (only if needed)
+** Make sure R_HOME is set.
    On some platforms or installations, you may also need to set the
    environment variable R_HOME. The value you use for R_HOME will
    depend on your particular installation, but following are typical
    values for setting R_HOME in the shell and in emacs for Mac OS X:
-
-   - Note for shell: On some systems, R_HOME may already be set, so
-     this step is optional.
 
    shell:
 #+BEGIN_EXAMPLE 
@@ -112,8 +54,19 @@ Welcome to Rincanter!
   that form in one of your emacs startup files if you want R_HOME to
   always be set.
 
+
+** Install Rincanter from git
+
+#+BEGIN_EXAMPLE
+   git clone git://github.com/jolby/rincanter.git
+   cd rincanter
+   lein deps # This installs Incanter and its deps into the lib subdir
+   lein native-deps #This installs the native libs in the native subdir 
+#+END_EXAMPLE
+
+
 ** Test and Run
-   Now you are ready to download rincanter and run it:
+   Now you are ready to test and run Rincanter:
 
    To run the unit tests:
 #+BEGIN_EXAMPLE 
