@@ -5,9 +5,9 @@
                  [org.clojure/clojure-contrib "1.2.0"]
                  [incanter "1.2.3"]]
   :native-dependencies [[jriengine "0.8.4"]]
-  :dev-dependencies [[swank-clojure "1.1.0"]
+  :dev-dependencies [[swank-clojure "1.4.0-SNAPSHOT"]
                      [autodoc "0.7.0"]
-                     [native-deps "1.0.0"]]
+                     [native-deps "1.0.5"]]
   :autodoc {:name "rincanter"
             :description "Clojure/R integration using rosuda JRIEngine"
             :page-title "Rincanter API documentation"
