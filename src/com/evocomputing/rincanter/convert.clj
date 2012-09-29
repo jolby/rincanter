@@ -158,7 +158,7 @@ otherwise"
   [rexp]
   nil)
 
-(def *object-type-to-primitive-type-map*
+(def ^:dynamic *object-type-to-primitive-type-map*
      {java.lang.Byte Byte/TYPE
       java.lang.Integer Integer/TYPE
       java.lang.Float Float/TYPE

@@ -21,7 +21,7 @@
   (:use [incanter.core]
         [com.evocomputing.rincanter.convert]))
 
-(defonce *jri-engine* (ref nil))
+(defonce ^:dynamic *jri-engine* (ref nil))
 
 (defn init-jri-engine
   "Initialize the jri engine. This can only be done once in the
