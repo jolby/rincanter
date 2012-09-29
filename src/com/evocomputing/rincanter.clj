@@ -166,3 +166,4 @@ repository or the master CRAN repository"
 ;;
 (defmethod print-method org.rosuda.REngine.REXP [o w]
   (.write w (str "#=(org.rosuda.REngine.REXP. " (.toString o) ")")))
+

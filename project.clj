@@ -7,8 +7,6 @@
                  [incanter "1.3.0"]
                  [REngine/REngine "0.5-5"]
                  [JRIEngine/JRIEngine "0.5-5"]]
-  :repositories {"snapshots" "http://nexus:8081/nexus/content/repositories/snapshots"
-                 "releases"  "http://nexus:8081/nexus/content/repositories/releases"}
   :autodoc {:name "rincanter"
             :description "Clojure/R integration using rosuda JRIEngine"
             :page-title "Rincanter API documentation"

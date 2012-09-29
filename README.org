@@ -11,22 +11,23 @@ Welcome to Rincanter!
   [[http://clojure.org/][Clojure]] and [[http://data-sorcery.org/][Incanter]] datatypes and R datatypes such as R dataframe to
   [[http://data-sorcery.org/][Incanter]] dataset.
 
-* Install
+* Installation
   
 ** Install Leiningen
-   Rincanter uses [[http://github.com/technomancy/leiningen][Leiningen]] to manage its dependencies on Clojure,
+   Rincanter uses [[http://github.com/technomancy/leiningen][Leiningen]] (currently using version 2) to manage its dependencies on Clojure,
    Incanter, and Rosuda JRI components. You will need to install
    [[http://github.com/technomancy/leiningen][Leiningen]] following the instructions on its
    [[http://github.com/technomancy/leiningen][project page]].
   
+
 ** Install R for your platform
 
    The directions for installing R are outside the scope of this
    document, but R is well supported on most platforms, and has great
    documentation: [[http://cran.r-project.org/][R Project Page]]
 
-
-** Make sure R_HOME is set.
+   
+** make sure r_HOME is set.
    On some platforms or installations, you may also need to set the
    environment variable R_HOME. The value you use for R_HOME will
    depend on your particular installation, but following are typical
@@ -56,6 +57,71 @@ Welcome to Rincanter!
   always be set.
 
 
+
+** Download and Install the rosuda JRI and REngine components
+This is the tricky archaic.  Rosuda seems to compile against the version of R installed on 
+your system so we can't distributed the JARs.  You need to build two JARs, and one native
+lib and make them available to RIncanter.
+
+*** The Native Library
+#+BEGIN_EXAMPLE 
+   mkdir external
+   cd external 
+   svn co svn://svn.rforge.net/org/trunk/rosuda/REngine
+   svn co svn://svn.rforge.net/org/trunk/rosuda/JRI
+   cd JRI
+   ./configure
+   make
+#+END_EXAMPLE
+
+   You will now have a jri native library file in this directory. Depending on
+   your platform it will have a name like: 
+
+   - libjri.so (linux)
+   - libjri.jnilib (Mac OS X) 
+   - jri.dll (Windows)
+
+   You need to make this native lib available to RIncanter which is done
+by putting in the appropriate directory.  For instance on a 32 bit linux:
+
+#+BEGIN_EXAMPLE 
+  mkdir ../../target/native/linux/x86/
+  cp libjri.so  ../../target/native/linux/x86/
+#+END_EXAMPLE
+
+The appropriate directory pattern is ../../target/native/<os>/<arch>/
+where <os> is probably one of win,macosx,linux and <arch> is x86 or x86_64 if
+you are on 64bit.
+
+*** Install the JARs
+#+BEGIN_EXAMPLE 
+  cd ../REngine
+  make
+#+END_EXAMPLE
+
+  You will now have an REngine.jar file in this directory.
+
+#+BEGIN_EXAMPLE 
+  cd JRI # this is a child dir of REngine, different from the JRI dir above
+  make
+#+END_EXAMPLE
+
+  You will now have an JRIEngine.jar file in this directory.
+
+  Now you need to make these JARs available to leiningen, either by installing them into the local repository
+or nexus.  If you have maven handy you can install them to your local repo with 
+these commands
+
+#+BEGIN_EXAMPLE 
+mvn install:install-file -Dfile=./JRIEngine.jar -DartifactId=JRIEngine -Dversion=0.5-5 -DgroupId=JRIEngine -Dpackaging=jar
+cd ..
+cd REngine
+mvn install:install-file -Dfile=./REngine.jar -DartifactId=REngine -Dversion=0.5-5 -DgroupId=REngine -Dpackaging=jar
+#+END_EXAMPLE
+
+Or follow https://github.com/technomancy/leiningen/blob/preview/doc/DEPLOY.md for more
+general instructions.
+
 ** Install Rincanter from git
 
 #+BEGIN_EXAMPLE
@@ -67,29 +133,13 @@ Welcome to Rincanter!
 
 
 ** Test and Run
-   Now you are ready to test and run Rincanter:
-
-   To run the unit tests:
-#+BEGIN_EXAMPLE 
-   lein test
-#+END_EXAMPLE
-
-   To start a repl:
-#+BEGIN_EXAMPLE 
-   lein repl
-#+END_EXAMPLE
-
-   To start a swank session and connect with Emacs/SLIME:
+   Now you are ready to test and run Rincanter.  The tests are currently down but you get an interactive session going
+   by starting up emacs (making sure that R_HOME is visible) and then using nrepl
 
 #+BEGIN_EXAMPLE 
-   lein swank
+M-x nrepl-jack-in
 #+END_EXAMPLE
-
-   ... then, in Emacs:
-
-#+BEGIN_EXAMPLE 
-   M-x slime-connect
-#+END_EXAMPLE
+ 
 
 * Example Usage
   The main entry points are the functions:
