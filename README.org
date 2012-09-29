@@ -136,12 +136,17 @@ mvn install:install-file -Dfile=./REngine.jar -DartifactId=REngine -Dversion=0.5
 Or follow https://github.com/technomancy/leiningen/blob/preview/doc/DEPLOY.md for more
 general instructions.
 
+
 ** Test and Run
-   Now you are ready to test and run Rincanter.  The tests are currently down but you get an interactive session going
-   by starting up emacs (making sure that R_HOME is visible) and then using nrepl
+   Now you are ready to test and run Rincanter.  Test
 
 #+BEGIN_EXAMPLE 
-cd ../..
+lein test
+#+END_EXAMPLE
+
+To get an interactive session going by starting up emacs (making sure that R_HOME is visible) and then using nrepl
+
+#+BEGIN_EXAMPLE 
 emacs project.clj
 #+END_EXAMPLE
 
