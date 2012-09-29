@@ -10,24 +10,16 @@
 ;; remove this notice, or any other, from this software.
 
 
-(ns #^{:doc
-       "Rincanter is a Clojure/incanter wrapper around the rosuda
-JRIEngine Java/R bridge. The hope is to allow easy access to an
-embedded R engine from incanter. It also offers conversion between
-Clojure/incanter datatypes and R datatypes such as R dataframe to
-incanter dataset."
-       :author "Joel Boehland"}
-
-  com.evocomputing.rincanter
+(ns
+    com.evocomputing.rincanter
   (:import (org.rosuda.REngine REXP RList REXPGenericVector
                                REXPInteger REXPDouble REXPString REXPLogical
                                RFactor REXPFactor
                                REngineException REXPMismatchException)
            (org.rosuda.REngine.JRI JRIEngine)
            (org.rosuda.JRI RMainLoopCallbacks))
-  (:use (clojure.contrib core def))
-  (:use (incanter core))
-  (:use (com.evocomputing.rincanter convert)))
+  (:use [incanter.core]
+        [com.evocomputing.rincanter.convert]))
 
 (defonce *jri-engine* (ref nil))
 
@@ -174,3 +166,4 @@ repository or the master CRAN repository"
 ;;
 (defmethod print-method org.rosuda.REngine.REXP [o w]
   (.write w (str "#=(org.rosuda.REngine.REXP. " (.toString o) ")")))
+

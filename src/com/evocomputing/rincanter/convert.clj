@@ -9,10 +9,7 @@
 ;; agreeing to be bound by the terms of this license.  You must not
 ;; remove this notice, or any other, from this software.
 
-(ns #^{:doc
-       "Convert between the rosuda Java/R wrapper types and Clojure types"
-       :author "Joel Boehland"}
-
+(ns
   com.evocomputing.rincanter.convert
   (:import (org.rosuda.REngine REXPNull REXP RList REXPList REXPVector REXPGenericVector
                                REXPInteger REXPDouble REXPString REXPLogical
@@ -20,8 +17,8 @@
                                REngineException REXPMismatchException)
            (org.rosuda.REngine.JRI JRIEngine)
            (org.rosuda.JRI RMainLoopCallbacks))
-  (:use (clojure.contrib core))
-  (:use (incanter core)))
+  (:use [incanter.core]
+        [clojure.core.incubator]))
 
 (declare from-r)
 (declare to-r)
