@@ -58,12 +58,24 @@ Welcome to Rincanter!
 
 
 
+
+** Install Rincanter from git
+
+#+BEGIN_EXAMPLE
+   git clone git://github.com/jolby/rincanter.git
+   cd rincanter
+#+END_EXAMPLE
+
+
 ** Download and Install the rosuda JRI and REngine components
-This is the tricky archaic.  Rosuda seems to compile against the version of R installed on 
-your system so we can't distributed the JARs.  You need to build two JARs, and one native
+This is a bit archaic.  Rosuda seems to compile against the version of R installed on 
+your system so we can't distribute the JARs.  You need to build two JARs, and one native
 lib and make them available to RIncanter.
 
+
 *** The Native Library
+Staring in the rincater base directory
+
 #+BEGIN_EXAMPLE 
    mkdir external
    cd external 
@@ -122,14 +134,6 @@ mvn install:install-file -Dfile=./REngine.jar -DartifactId=REngine -Dversion=0.5
 Or follow https://github.com/technomancy/leiningen/blob/preview/doc/DEPLOY.md for more
 general instructions.
 
-** Install Rincanter from git
-
-#+BEGIN_EXAMPLE
-   git clone git://github.com/jolby/rincanter.git
-   cd rincanter
-   lein deps # This installs Incanter and its deps into the lib subdir
-   lein native-deps #This installs the native libs in the native subdir 
-#+END_EXAMPLE
 
 
 ** Test and Run
