@@ -97,6 +97,9 @@ Staring in the rincater base directory
 by putting in the appropriate directory.  For instance on a 32 bit linux:
 
 #+BEGIN_EXAMPLE 
+  mkdir ../../target/
+  mkdir ../../target/native/
+  mkdir ../../target/native/linux/
   mkdir ../../target/native/linux/x86/
   cp libjri.so  ../../target/native/linux/x86/
 #+END_EXAMPLE
@@ -127,24 +130,23 @@ these commands
 #+BEGIN_EXAMPLE 
 mvn install:install-file -Dfile=./JRIEngine.jar -DartifactId=JRIEngine -Dversion=0.5-5 -DgroupId=JRIEngine -Dpackaging=jar
 cd ..
-cd REngine
 mvn install:install-file -Dfile=./REngine.jar -DartifactId=REngine -Dversion=0.5-5 -DgroupId=REngine -Dpackaging=jar
 #+END_EXAMPLE
 
 Or follow https://github.com/technomancy/leiningen/blob/preview/doc/DEPLOY.md for more
 general instructions.
 
-
-
 ** Test and Run
    Now you are ready to test and run Rincanter.  The tests are currently down but you get an interactive session going
    by starting up emacs (making sure that R_HOME is visible) and then using nrepl
 
 #+BEGIN_EXAMPLE 
-M-x nrepl-jack-in
+cd ../..
+emacs project.clj
 #+END_EXAMPLE
- 
 
+and then M-x nrepl-jack-in.
+ 
 * Example Usage
   The main entry points are the functions:
   - [[http://jolby.github.com/rincanter/com.evocomputing.rincanter-api.html#com.evocomputing.rincanter/r-eval][r-eval]]
