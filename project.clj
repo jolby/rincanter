@@ -6,7 +6,7 @@
                  [org.clojure/core.incubator "0.1.2"]
                  ;; Until this bug is fixed in incanter:
                  ;; https://github.com/liebke/incanter/issues/84
-                 [incanter "1.3.0-SNAPSHOT" :exclusions [incanter/incanter-mongodb]]
+                 [incanter "1.3.0" :exclusions [incanter/incanter-mongodb]]
 
                  [REngine/REngine "0.5-5"]
                  [JRIEngine/JRIEngine "0.5-5"]]
