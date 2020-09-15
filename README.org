@@ -27,7 +27,7 @@ Welcome to Rincanter!
    documentation: [[http://cran.r-project.org/][R Project Page]]
 
    
-** make sure r_HOME is set.
+** make sure R_HOME is set.
    On some platforms or installations, you may also need to set the
    environment variable R_HOME. The value you use for R_HOME will
    depend on your particular installation, but following are typical
